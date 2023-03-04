@@ -7,7 +7,7 @@
     <div>
         <ul>
             {% for user_id in users %}
-                <li>{{ users[user_id] }}</li>
+                <li><a href="{{url_for('users_app.details', user_id=user_id)}}">{{users[user_id]}}</a></li>
             {% endfor %}
         </ul>
     </div>
