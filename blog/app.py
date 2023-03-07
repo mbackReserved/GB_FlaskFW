@@ -1,16 +1,12 @@
-from flask import Flask, request
-
+from flask import Flask, request, render_template
+from blog.views.users import users_app
+from blog.views.articles import articles_app
 
 app = Flask(__name__)
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/')
 def index():
-    username = request.args.get("username")
-    method = request.method
-    if username:
-        return f'Welcome, {username}'
-    return f'Welcome to Home Page! Method = {method}'
+    return render_template("index.html")
 
-@app.errorhandler(404)
-def handler_404(error):
-    return 'Page not found'
+app.register_blueprint(users_app, url_prefix="/users")
+app.register_blueprint(articles_app, url_prefix="/articles")
