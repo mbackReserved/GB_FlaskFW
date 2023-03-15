@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 from blog.views.users import users_app
 from blog.views.articles import articles_app
 from blog.models.database import db
+from blog.views.auth import login_manager, auth_app
 
 app = Flask(__name__)
 
@@ -14,7 +15,11 @@ app.register_blueprint(articles_app, url_prefix="/articles")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:////tmp/blog.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db.init_app(app)
+app.config["SECRET_KEY"] = "abcdefg123456"
+
+app.register_blueprint(auth_app, url_prefix="/auth")
+
+login_manager.init_app(app)
 
 
 @app.cli.command("init-db")
