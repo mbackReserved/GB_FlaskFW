@@ -3,9 +3,9 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 
 from blog.models import User
 
-auth_app = Blueprint('auth_app', __name__)
+auth_app = Blueprint("auth_app", __name__, url_prefix="/auth", static_folder="../static")
 
-login_manager = LoginManager
+login_manager = LoginManager()
 login_manager.login_view = "auth_app.login"
 
 
@@ -35,7 +35,7 @@ def login():
     
     user = User.query.filter_by(username=username).one_or_none()
     if user is None:
-        return render_template("auth/login.html", error=f"no user {username!r} found")
+        return render_template("auth/login.html", error=f"no user {username} found")
     
     login_user(user)
     return redirect(url_for("index"))

@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template
 from werkzeug.exceptions import NotFound
 from blog.models import User
+from flask_login import login_required
 
 users_app = Blueprint("users_app", __name__)
 
 
 @users_app.route("/", endpoint="list")
+@login_required
 def users_list():
     users = User.query.all()
     return render_template("users/list.html", users=users)
