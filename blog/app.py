@@ -23,7 +23,7 @@ login_manager.init_app(app)
 cfg_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
 app.config.from_object(f"blog.configs.{cfg_name}")
 
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, compare_type=True)
 
 
 @app.route('/')
