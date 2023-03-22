@@ -1,8 +1,8 @@
-"""update user
+"""unique email for user
 
-Revision ID: d2cb54e69dc3
+Revision ID: 46581ca003b3
 Revises: 
-Create Date: 2023-03-22 19:08:56.449558
+Create Date: 2023-03-22 19:12:33.108825
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd2cb54e69dc3'
+revision = '46581ca003b3'
 down_revision = None
 branch_labels = None
 depends_on = None
