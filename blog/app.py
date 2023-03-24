@@ -6,6 +6,7 @@ from blog.views.auth import login_manager, auth_app
 import os
 from flask_migrate import Migrate
 from blog.security import flask_bcrypt
+from blog.views.authors import authors_app
 
 app = Flask(__name__)
 
@@ -46,3 +47,6 @@ def create_admin():
     db.session.commit()
     
     print("created admin:", admin)
+
+
+app.register_blueprint(authors_app, url_prefix="/authors")
