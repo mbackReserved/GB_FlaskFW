@@ -5,6 +5,7 @@ from blog.models.database import db
 from blog.views.auth import login_manager, auth_app
 import os
 from flask_migrate import Migrate
+from blog.security import flask_bcrypt
 
 app = Flask(__name__)
 
@@ -26,25 +27,22 @@ app.config.from_object(f"blog.configs.{cfg_name}")
 migrate = Migrate(app, db, compare_type=True)
 
 
+flask_bcrypt.init_app(app)
+
+
 @app.route('/')
 def index():
     return render_template("index.html")
 
 
-@app.cli.command("init-db")
-def init_db():
-    db.create_all()
-    print("done!")
-
-
-@app.cli.command("create-users")
-def create_users():
-    from blog.models import User
+@app.cli.command("create-admin")
+def create_admin():
+    from blog.models.user import User
     admin = User(username='admin', is_staff=True)
-    vadim = User(username="vadim")
+    admin.password = os.environ.get("ADMIN_PASSWORD") or "adminpass"
 
+    db.create_all()
     db.session.add(admin)
-    db.session.add(vadim)
     db.session.commit()
-
-    print("created users:", admin, vadim)
+    
+    print("created admin:", admin)
