@@ -1,5 +1,5 @@
 from sqlalchemy.orm import relationship
-from blog.models.database import db
+from .database import db
 from datetime import datetime
 from sqlalchemy import Column, Integer, ForeignKey, String, Text, DateTime, func
 

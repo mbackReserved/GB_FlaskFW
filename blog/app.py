@@ -1,34 +1,37 @@
-from flask import Flask, request, render_template
-from blog.views.users import users_app
-from blog.views.articles import articles_app
-from blog.models.database import db
-from blog.views.auth import login_manager, auth_app
 import os
+
+from flask import Flask, render_template
 from flask_migrate import Migrate
-from blog.security import flask_bcrypt
-from blog.views.authors import authors_app
+
+from .configs import DevConfig
+from .models.database import db
+from .security import flask_bcrypt
+from .views.articles import articles_app
+from .views.authors import authors_app
+from .views.auth import login_manager, auth_app
+from .views.users import users_app
 
 app = Flask(__name__)
 
 app.register_blueprint(users_app, url_prefix="/users")
 app.register_blueprint(articles_app, url_prefix="/articles")
+app.register_blueprint(authors_app, url_prefix="/authors")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:////tmp/blog.db'
+app.config.from_object(DevConfig)
+
+file_path = os.path.abspath(os.getcwd()) + "\database.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + file_path
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
+
+
 app.config["SECRET_KEY"] = "abcdefg123456"
-
-
 app.register_blueprint(auth_app, url_prefix="/auth")
 login_manager.init_app(app)
 
-cfg_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
-app.config.from_object(f"blog.configs.{cfg_name}")
+flask_bcrypt.init_app(app)
 
 migrate = Migrate(app, db, compare_type=True)
-
-
-flask_bcrypt.init_app(app)
 
 
 @app.route('/')
@@ -42,11 +45,9 @@ def create_admin():
     admin = User(username='admin', is_staff=True)
     admin.password = os.environ.get("ADMIN_PASSWORD") or "adminpass"
 
-    db.create_all()
     db.session.add(admin)
     db.session.commit()
-    
+   
     print("created admin:", admin)
 
 
-app.register_blueprint(authors_app, url_prefix="/authors")

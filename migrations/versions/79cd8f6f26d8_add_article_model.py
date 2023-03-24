@@ -1,8 +1,8 @@
-"""update article model
+"""add article model
 
-Revision ID: d76c4524fdcd
+Revision ID: 79cd8f6f26d8
 Revises: 
-Create Date: 2023-03-24 08:04:02.100237
+Create Date: 2023-03-24 18:04:13.294289
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd76c4524fdcd'
+revision = '79cd8f6f26d8'
 down_revision = None
 branch_labels = None
 depends_on = None
