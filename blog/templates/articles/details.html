@@ -7,6 +7,14 @@
 {% block body %}
     <h1>{{ article.title }}</h1>
     <div>
+        {% if article.tags %}
+            <div>Tags:</div>
+            <ul>
+                {% for tag in article.tags %}
+                    <li>{{ tag.name }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <p>{{ article.body }}</p>
         <div>Published {{ article.dt_created }}</div>
         <div>by {{ article.author.user.username }}</div>
