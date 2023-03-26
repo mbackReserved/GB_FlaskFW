@@ -10,6 +10,7 @@ from .views.articles import articles_app
 from .views.authors import authors_app
 from .views.auth import login_manager, auth_app
 from .views.users import users_app
+from .admin import admin
 
 app = Flask(__name__)
 
@@ -32,6 +33,8 @@ login_manager.init_app(app)
 flask_bcrypt.init_app(app)
 
 migrate = Migrate(app, db, compare_type=True)
+
+admin.init_app(app)
 
 
 @app.route('/')
